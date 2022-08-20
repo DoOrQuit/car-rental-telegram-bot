@@ -50,8 +50,7 @@ async def command_contacts(message : types.Message):
 @dp.message_handler(lambda message : 'rent' in message.text.lower())
 async def text_rent(message : types.Message):
     await message.reply("Sure! We'll find a perfect car for You!")
-
-
+    
 
 
 @dp.message_handler()
