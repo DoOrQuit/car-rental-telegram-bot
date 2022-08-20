@@ -1,5 +1,4 @@
-from cgitb import text
-from email import message
+import asyncio
 from config import TOKEN
 from config import db_pass
 from datetime import date, datetime
@@ -15,16 +14,6 @@ bot = aiogram.Bot(token=TOKEN)
 dp = Dispatcher(bot)
 current_time = datetime.now().strftime("%H%M")
 
-#async def startup(_):
-    #try:
-        #conn = psycopg2.connect(
-            #database="car_rental",
-            #user="postgres",
-            #password=db_pass)
-    #except:
-        #print('Something gone wrong during connecting to the DataBase')
-    #else:
-        #print('Connection to DataBase sucessfully established')
 
 @dp.message_handler(commands = ['start'])
 async def command_start(message : types.Message):
@@ -47,11 +36,38 @@ async def command_contacts(message : types.Message):
     await bot.send_message(message.from_user.id, "Office address: b.125 Myra Street, Kyiv\nPhone Number: +380123456789"
                                                 "\nEmail: test@rentals.ua", reply_markup=kb.main_buttons)
 
+
+"""Identifies the category for building the class object and branching the dialog relating to renting filters"""
 @dp.message_handler(lambda message : 'rent' in message.text.lower())
-async def text_rent(message : types.Message):
+async def category_identifier(message : types.Message):
     await message.reply("Sure! We'll find a perfect car for You!")
+    await asyncio.sleep(2)
+    await bot.send_message(message.from_user.id,"Please, use the menu \U00002B07 to find Your perfect car,"
+                                                " or send me message with the brand/model You like", reply_markup=kb.category_buttons)
     
 
+@dp.message_handler(lambda message : 'economy' or 'cheap' in message.text.lower())
+async def economy_category(message : types.Message):
+    await message.reply('Economy category\n(15$ - 45$).\nPlease, use the buttons to navigate \U00002B07', )
+    try:
+        conn = psycopg2.connect(database = 'car_rental', 
+                                user = 'postgres', 
+                                password = db_pass)
+        curs = conn.cursor()
+        await message.answer('Our economy class fleet:')
+        
+        curs.execute("""SELECT brand, model, fuel, price
+                        FROM fleet
+                        WHERE category = 'economy'""")
+        economy_car_list = curs.fetchall
+        await message.answer(economy_car_list)
+    except:
+        print('Something goes wrong with DB')
+    finally:
+        curs.close()
+        conn.close()
+        
+        
 
 @dp.message_handler()
 async def echo_reply(message : types.Message):
