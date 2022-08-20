@@ -18,7 +18,33 @@ assistant_contact = KeyboardButton("Get an assistant number \U0001F4DE")
 help_buttons = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 help_buttons.row(share_phone, assistant_contact)
 
-"""Main/Rent Buttons"""
+
+"""Rent. Category Buttons"""
+economy_bt = KeyboardButton('Economy')
+middle_bt=KeyboardButton('Middle')
+business_bt = KeyboardButton('Business')
+premium_bt = KeyboardButton('PREMIUM')
+suv_bt = KeyboardButton('Suv')
+minivan_bt = KeyboardButton('Minivan')
+
+category_buttons = ReplyKeyboardMarkup(resize_keyboard=True)
+category_buttons.row(economy_bt, middle_bt, business_bt)
+category_buttons.row(premium_bt)
+category_buttons.row(suv_bt, minivan_bt)
+
+"""Economy category filters"""
+
+
+"""Middle category filters"""
+
+"""Business category filters"""
+
+"""Premium category filters"""
+
+"""SUV category filters"""
+
+"""Minivan category filters"""
+
 
 
 
