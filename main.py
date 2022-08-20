@@ -4,16 +4,14 @@ from config import db_pass
 from datetime import date, datetime
 import psycopg2
 import aiogram
-from aiogram.dispatcher import Dispatcher
-from aiogram import types
-from aiogram.utils import executor
+from aiogram import Bot, Dispatcher, executor, types
 from core.packages import kb_pack as kb
+from rent_construct import *
 
 
 bot = aiogram.Bot(token=TOKEN)
 dp = Dispatcher(bot)
 current_time = datetime.now().strftime("%H%M")
-
 
 @dp.message_handler(commands = ['start'])
 async def command_start(message : types.Message):
@@ -51,18 +49,16 @@ async def economy_category(message : types.Message):
     await message.reply('Economy category\n(15$ - 45$).\nPlease, use the buttons to navigate \U00002B07', )
     try:
         conn = psycopg2.connect(database = 'car_rental', 
-                                user = 'postgres', 
-                                password = db_pass)
+                                    user = 'postgres', 
+                                    password = db_pass)
         curs = conn.cursor()
-        await message.answer('Our economy class fleet:')
         
         curs.execute("""SELECT brand, model, fuel, price
-                        FROM fleet
-                        WHERE category = 'economy'""")
-        economy_car_list = curs.fetchall
-        await message.answer(economy_car_list)
-    except:
-        print('Something goes wrong with DB')
+                            FROM fleet
+                            WHERE category = %s """, ('economy',))
+        fetch = curs.fetchall()
+        for row in fetch:
+            await message.answer(f'{row}')         
     finally:
         curs.close()
         conn.close()
@@ -73,6 +69,8 @@ async def economy_category(message : types.Message):
 async def echo_reply(message : types.Message):
     await message.reply("Hello! I'm Your assistant. Probably I didn't understand you." 
                         " Please repeat Your question.")
+
+
 
 
 
