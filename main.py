@@ -33,6 +33,11 @@ async def command_help(message : types.Message):
 async def command_contacts(message : types.Message):
     await bot.send_message(message.from_user.id, "Office address: b.125 Myra Street, Kyiv\nPhone Number: +380123456789"
                                                 "\nEmail: test@rentals.ua", reply_markup=kb.main_buttons)
+@dp.message_handler(lambda message : 'assistant' in message.text.lower())
+async def assistant_contact(message : types.Message):
+    await message.reply("Customers support contact 24/7\n+380991234567")
+    await bot.send_message(message.from_user.id,'Hope I could help', reply_markup=kb.main_buttons)
+
 
 
 """Identifies the category for building the class object and branching the dialog relating to renting filters"""
@@ -47,21 +52,7 @@ async def category_identifier(message : types.Message):
 @dp.message_handler(lambda message : 'economy' or 'cheap' in message.text.lower())
 async def economy_category(message : types.Message):
     await message.reply('Economy category\n(15$ - 45$).\nPlease, use the buttons to navigate \U00002B07', )
-    try:
-        conn = psycopg2.connect(database = 'car_rental', 
-                                    user = 'postgres', 
-                                    password = db_pass)
-        curs = conn.cursor()
-        
-        curs.execute("""SELECT brand, model, fuel, price
-                            FROM fleet
-                            WHERE category = %s """, ('economy',))
-        fetch = curs.fetchall()
-        for row in fetch:
-            await message.answer(f'{row}')         
-    finally:
-        curs.close()
-        conn.close()
+
         
         
 

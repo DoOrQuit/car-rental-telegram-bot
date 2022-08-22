@@ -10,22 +10,21 @@ from config import db_pass
         #self.category = category
         #self.brand = brand
 
-try:
-    conn = psycopg2.connect(database = 'car_rental', 
-                            user = 'postgres', 
-                            password = db_pass)
-    curs = conn.cursor()
+# try:
+#     conn = psycopg2.connect(database = 'car_rental', 
+#                                     user = 'postgres', 
+#                                     password = db_pass)
+#     curs = conn.cursor()
         
-    curs.execute("""SELECT brand, model, fuel, price
-                    FROM fleet
-                    WHERE category = %s""", ('economy',))
-    fetch = curs.fetchall()
-    
-    for row in fetch:
-        print(row)  
-finally:
-    curs.close()
-    conn.close()
+#     curs.execute("""SELECT brand, model, fuel, price
+#                             FROM fleet
+#                             WHERE category = %s """, ('economy',))
+#     fetch = curs.fetchall()
+#     for row in fetch:
+#         await message.answer(f'{row}')         
+# finally:
+#     curs.close()
+#     conn.close()
 
 
 
