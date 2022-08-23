@@ -6,12 +6,14 @@ import psycopg2
 import aiogram
 from aiogram import Bot, Dispatcher, executor, types
 from core.packages import kb_pack as kb
-from rent_construct import *
 
 
 bot = aiogram.Bot(token=TOKEN)
 dp = Dispatcher(bot)
 current_time = datetime.now().strftime("%H%M")
+connect = psycopg2.connect(database = 'car_rental', 
+                        user = 'postgres', 
+                        password = db_pass)
 
 @dp.message_handler(commands = ['start'])
 async def command_start(message : types.Message):
@@ -33,6 +35,9 @@ async def command_help(message : types.Message):
 async def command_contacts(message : types.Message):
     await bot.send_message(message.from_user.id, "Office address: b.125 Myra Street, Kyiv\nPhone Number: +380123456789"
                                                 "\nEmail: test@rentals.ua", reply_markup=kb.main_buttons)
+
+
+
 @dp.message_handler(lambda message : 'assistant' in message.text.lower())
 async def assistant_contact(message : types.Message):
     await message.reply("Customers support contact 24/7\n+380991234567")
@@ -49,9 +54,13 @@ async def category_identifier(message : types.Message):
                                                 " or send me message with the brand/model You like", reply_markup=kb.category_buttons)
     
 
-@dp.message_handler(lambda message : 'economy' or 'cheap' in message.text.lower())
+@dp.message_handler(lambda message : 'economy' in message.text.lower())
 async def economy_category(message : types.Message):
-    await message.reply('Economy category\n(15$ - 45$).\nPlease, use the buttons to navigate \U00002B07', )
+    await message.reply('Economy category\n(15$ - 45$)\nPlease, use the buttons to navigate \U00002B07',reply_markup=kb.economy_inline_filters_buttons)
+
+@dp.callback_query_handler(text='economy_cars_show')
+async def economy_filters_inline(callback: types.CallbackQuery):
+    await callback.message.answer("Brands available in this category \U00002B07",reply_markup=kb.economy_brands_inline)
 
         
         
