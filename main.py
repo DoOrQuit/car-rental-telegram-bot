@@ -60,7 +60,7 @@ async def economy_category(message : types.Message):
 
 @dp.callback_query_handler(text='economy_cars_show')
 async def economy_filters_inline(callback: types.CallbackQuery):
-    await callback.message.answer("Brands available in this category \U00002B07",reply_markup=kb.economy_brands_inline)
+    await callback.message.answer("Brands available in this category \U00002B07", reply_markup=kb.economy_brands_inline)
 
         
         

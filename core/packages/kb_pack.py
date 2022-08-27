@@ -39,7 +39,6 @@ economy_byprice_inline_bt = InlineKeyboardButton('Filter by Price', callback_dat
 
 economy_inline_filters_buttons = InlineKeyboardMarkup().row(economy_cars_inline_bt, economy_byprice_inline_bt)
 """Economy Secondary menu"""
-economy_brands_list = []
 try:
     connect = psycopg2.connect(database = 'car_rental', 
                         user = 'postgres', 
@@ -48,24 +47,23 @@ try:
     curs.execute("""SELECT DISTINCT brand
                     FROM fleet
                     WHERE category = 'economy'""")
-    for row in curs.fetchall():
-        economy_brands_list.append(row[0])
+   
+    economy_brands_list = [x[0] for x in curs.fetchall()]
+
 except:
     print('oops. DB die')
 finally:
     curs.close()
     connect.close()
 
-def economy_bt_generator(): #function dynamicaly create the buttons' quantity depends on cars available in DataBase
-    buttons_list = []
+def economy_bt_generator(): # Function generates the quantity of inline buttons (brands in this case) depends on DB condition   
     final_expression = 'InlineKeyboardMarkup()'
     for variable in economy_brands_list:
-        buttons_list.append(f'.add(InlineKeyboardButton({variable}, callback_data={variable.lower()}))')
-    for button in buttons_list:
-        final_expression = f"{final_expression}{button}"
+        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="{variable.lower()}"))'
     return eval(final_expression)
 
-economy_brands_inline = economy_bt_generator() 
+economy_brands_inline = economy_bt_generator()
+
 
 
 
