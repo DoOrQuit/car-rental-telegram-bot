@@ -1,6 +1,5 @@
 import asyncio
 from config import TOKEN
-from config import db_pass
 from datetime import date, datetime
 import psycopg2
 import aiogram
@@ -11,9 +10,7 @@ from core.packages import kb_pack as kb
 bot = aiogram.Bot(token=TOKEN)
 dp = Dispatcher(bot)
 current_time = datetime.now().strftime("%H%M")
-connect = psycopg2.connect(database = 'car_rental', 
-                        user = 'postgres', 
-                        password = db_pass)
+
 
 @dp.message_handler(commands = ['start'])
 async def command_start(message : types.Message):
