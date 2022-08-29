@@ -1,4 +1,5 @@
 import psycopg2
+from config import db_pass
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
 
 
@@ -10,7 +11,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemo
 try:
     connect = psycopg2.connect(database = 'car_rental', 
                         user = 'postgres', 
-                        password = 'datapass')
+                        password = db_pass)
     curs = connect.cursor()
     curs.execute("""SELECT DISTINCT brand
                     FROM fleet
@@ -39,7 +40,7 @@ def economy_bt_generator():
 try:
     connect = psycopg2.connect(database = 'car_rental', 
                         user = 'postgres', 
-                        password = 'datapass')
+                        password = db_pass)
     curs = connect.cursor()
     curs.execute("""SELECT DISTINCT brand
                     FROM fleet
@@ -68,7 +69,7 @@ def middle_bt_generator():
 try:
     connect = psycopg2.connect(database = 'car_rental', 
                         user = 'postgres', 
-                        password = 'datapass')
+                        password = db_pass)
     curs = connect.cursor()
     curs.execute("""SELECT DISTINCT brand
                     FROM fleet
@@ -96,7 +97,7 @@ def business_bt_generator():
 try:
     connect = psycopg2.connect(database = 'car_rental', 
                         user = 'postgres', 
-                        password = 'datapass')
+                        password = db_pass)
     curs = connect.cursor()
     curs.execute("""SELECT DISTINCT brand
                     FROM fleet
@@ -124,7 +125,7 @@ def premium_bt_generator():
 try:
     connect = psycopg2.connect(database = 'car_rental', 
                         user = 'postgres', 
-                        password = 'datapass')
+                        password = db_pass)
     curs = connect.cursor()
     curs.execute("""SELECT DISTINCT brand
                     FROM fleet
@@ -152,7 +153,7 @@ def suv_bt_generator():
 try:
     connect = psycopg2.connect(database = 'car_rental', 
                         user = 'postgres', 
-                        password = 'datapass')
+                        password = db_pass)
     curs = connect.cursor()
     curs.execute("""SELECT DISTINCT brand
                     FROM fleet

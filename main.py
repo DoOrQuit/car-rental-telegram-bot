@@ -11,7 +11,7 @@ bot = aiogram.Bot(token=TOKEN)
 dp = Dispatcher(bot)
 current_time = datetime.now().strftime("%H%M")
 
-
+"""Start Command"""
 @dp.message_handler(commands = ['start'])
 async def command_start(message : types.Message):
     if 1200 > int(current_time) > 0000 :
@@ -24,17 +24,19 @@ async def command_start(message : types.Message):
         await bot.send_message(message.from_user.id, f"Good evening, {message.from_user.first_name}."
                                                     " Please, press one of the buttons below \U00002B07", reply_markup= kb.main_buttons)
 
+"""Help Command"""
 @dp.message_handler(commands = ['help'])
 async def command_help(message : types.Message):
     await bot.send_message(message.from_user.id, "Don't worry. We'll assist You with any problem", reply_markup= kb.help_buttons)
 
+"""Contacts Command"""
 @dp.message_handler(commands = ['contacts'])
 async def command_contacts(message : types.Message):
     await bot.send_message(message.from_user.id, "Office address: b.125 Myra Street, Kyiv\nPhone Number: +380123456789"
                                                 "\nEmail: test@rentals.ua", reply_markup=kb.main_buttons)
 
 
-
+"""Assistant Call. Reacts for text in chat"""
 @dp.message_handler(lambda message : 'assistant' in message.text.lower())
 async def assistant_contact(message : types.Message):
     await message.reply("Customers support contact 24/7\n+380991234567")
@@ -58,7 +60,7 @@ async def economy_category(message : types.Message):
 
 @dp.callback_query_handler(text='economy_cars_show')
 async def economy_filters_inline(callback: types.CallbackQuery):
-    await callback.message.answer("Brands available in this category \U00002B07", reply_markup=kb.economy_brands_inline)
+    await callback.message.reply("Brands available in this category \U00002B07", reply_markup=kb.economy_brands_inline)
 
 @dp.message_handler(lambda message : 'middle' in message.text.lower())
 async def middle_category(message : types.Message):
@@ -67,7 +69,7 @@ async def middle_category(message : types.Message):
 
 @dp.callback_query_handler(text='middle_cars_show')
 async def middle_filters_inline(callback: types.CallbackQuery):
-    await callback.message.answer("Brands available in this category \U00002B07", reply_markup=kb.middle_brands_inline)
+    await callback.message.reply("Brands available in this category \U00002B07", reply_markup=kb.middle_brands_inline)
 
 @dp.message_handler(lambda message : 'business' in message.text.lower())
 async def business_category(message : types.Message):
@@ -76,7 +78,7 @@ async def business_category(message : types.Message):
 
 @dp.callback_query_handler(text='business_cars_show')
 async def business_filters_inline(callback: types.CallbackQuery):
-    await callback.message.answer("Brands available in this category \U00002B07", reply_markup=kb.business_brands_inline)
+    await callback.message.reply("Brands available in this category \U00002B07", reply_markup=kb.business_brands_inline)
 
 @dp.message_handler(lambda message : 'premium' in message.text.lower())
 async def premium_category(message : types.Message):
@@ -85,7 +87,7 @@ async def premium_category(message : types.Message):
 
 @dp.callback_query_handler(text='premium_cars_show')
 async def premium_filters_inline(callback: types.CallbackQuery):
-    await callback.message.answer("Brands available in this category \U00002B07", reply_markup=kb.premium_brands_inline)
+    await callback.message.reply("Brands available in this category \U00002B07", reply_markup=kb.premium_brands_inline)
 
 @dp.message_handler(lambda message : 'suv' in message.text.lower())
 async def suv_category(message : types.Message):
@@ -94,7 +96,7 @@ async def suv_category(message : types.Message):
 
 @dp.callback_query_handler(text='suv_cars_show')
 async def suv_filters_inline(callback: types.CallbackQuery):
-    await callback.message.answer("Brands available in this category \U00002B07", reply_markup=kb.suv_brands_inline)
+    await callback.message.reply("Brands available in this category \U00002B07", reply_markup=kb.suv_brands_inline)
 
 @dp.message_handler(lambda message : 'minivan' in message.text.lower())
 async def minivan_category(message : types.Message):
@@ -103,11 +105,11 @@ async def minivan_category(message : types.Message):
 
 @dp.callback_query_handler(text='minivan_cars_show')
 async def minivan_filters_inline(callback: types.CallbackQuery):
-    await callback.message.answer("Brands available in this category \U00002B07", reply_markup=kb.minivan_brands_inline)
+    await callback.message.reply("Brands available in this category \U00002B07", reply_markup=kb.minivan_brands_inline)
 
         
         
-
+"""Common echo replier"""
 @dp.message_handler()
 async def echo_reply(message : types.Message):
     await message.reply("Hello! I'm Your assistant. Probably I didn't understand you." 
