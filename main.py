@@ -62,6 +62,22 @@ async def economy_category(message : types.Message):
 async def economy_filters_inline(callback: types.CallbackQuery):
     await callback.message.reply("Brands available in this category \U00002B07", reply_markup=kb.economy_brands_inline)
 
+@dp.callback_query_handler(text='vw_economy')
+async def economy_filters_inline(callback: types.CallbackQuery):
+    await callback.message.reply("All Volkswagen models avalable in Economy categoty \U00002B07", reply_markup=kb.economy_brands_inline)
+
+
+
+
+
+
+
+
+
+
+
+
+
 @dp.message_handler(lambda message : 'middle' in message.text.lower())
 async def middle_category(message : types.Message):
     await message.reply('Middle category\n(30$ - 70$)\n'
