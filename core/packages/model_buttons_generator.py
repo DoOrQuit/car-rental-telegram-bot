@@ -1,32 +1,144 @@
 import psycopg2
 from config import db_pass
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
+from brand_buttons_generator import economy_brands_list, middle_brands_list, business_brands_list
+from brand_buttons_generator import premium_brands_list, suv_brands_list, minivan_brands_list
 
 
-# Fetching the list of VW models in economy categories to hand over to button generating function
+
+"""Generates the lists of brands in Economy category each of which contains evailable model names"""
 try:
     connect = psycopg2.connect(database = 'car_rental', 
-                        user = 'postgres', 
-                        password = db_pass)
+                                user = 'postgres', 
+                                password = db_pass)
     curs = connect.cursor()
-    curs.execute("""SELECT DISTINCT brand
-                    FROM fleet
-                    WHERE category = %s and brand = %s""", ('economy', 'vw' ))
-   
-    economy_brands_list = [model[0] for model in curs.fetchall()]
+    
+    #iteration that creates the list contains all models available for every single brand with name '{category}_{brand.lower()}' 
+    #                                                                                      (in this case: economy_{brand.lower()})
+    temp_var = ''
+    for brand in economy_brands_list:
+        curs.execute("""SELECT DISTINCT model
+                        FROM fleet
+                        WHERE category = %s and brand = %s""", ('economy', f'{brand}'))
+        expres = [x[0] for x in curs.fetchall()] 
+        temp_var+=f"economy_{brand.lower()} = {expres}\n"
+        exec(temp_var)
 
-except:
-    print('oops. DB die')
 finally:
     curs.close()
     connect.close()
 
-def economy_bt_generator(): 
-    """
-    Function generates the amount of inline buttons (brands in this case) depends on DB condition
+
+"""Generates the lists of brands in Middle category each of which contains evailable model names"""
+try:
+    connect = psycopg2.connect(database = 'car_rental', 
+                                user = 'postgres', 
+                                password = db_pass)
+    curs = connect.cursor()
     
-    """  
-    final_expression = 'InlineKeyboardMarkup()'
-    for variable in economy_brands_list:
-        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="{variable.lower()}_economy"))'
-    return eval(final_expression)
+    #iteration that creates the list contains all models available for every single brand with name '{category}_{brand.lower()}' 
+    #                                                                                      (in this case: middle_{brand.lower()})
+    temp_var = ''
+    for brand in middle_brands_list:
+        curs.execute("""SELECT DISTINCT model
+                        FROM fleet
+                        WHERE category = %s and brand = %s""", ('middle', f'{brand}'))
+        expres = [x[0] for x in curs.fetchall()] 
+        temp_var+=f"middle_{brand.lower()} = {expres}\n"
+        exec(temp_var)
+
+finally:
+    curs.close()
+    connect.close()
+
+
+"""Generates the lists of brands in Business category each of which contains evailable model names"""
+try:
+    connect = psycopg2.connect(database = 'car_rental', 
+                                user = 'postgres', 
+                                password = db_pass)
+    curs = connect.cursor()
+    
+    #iteration that creates the list contains all models available for every single brand with name '{category}_{brand.lower()}' 
+    #                                                                                      (in this case: business_{brand.lower()})
+    temp_var = ''
+    for brand in business_brands_list:
+        curs.execute("""SELECT DISTINCT model
+                        FROM fleet
+                        WHERE category = %s and brand = %s""", ('business', f'{brand}'))
+        expres = [x[0] for x in curs.fetchall()] 
+        temp_var+=f"business_{brand.lower()} = {expres}\n"
+        exec(temp_var)
+
+finally:
+    curs.close()
+    connect.close()
+
+
+"""Generates the lists of brands in Premium category each of which contains evailable model names"""
+try:
+    connect = psycopg2.connect(database = 'car_rental', 
+                                user = 'postgres', 
+                                password = db_pass)
+    curs = connect.cursor()
+    
+    #iteration that creates the list contains all models available for every single brand with name '{category}_{brand.lower()}' 
+    #                                                                                      (in this case: premium_{brand.lower()})
+    temp_var = ''
+    for brand in premium_brands_list:
+        curs.execute("""SELECT DISTINCT model
+                        FROM fleet
+                        WHERE category = %s and brand = %s""", ('premium', f'{brand}'))
+        expres = [x[0] for x in curs.fetchall()] 
+        temp_var+=f"premium_{brand.lower()} = {expres}\n"
+        exec(temp_var)
+
+finally:
+    curs.close()
+    connect.close()
+
+
+"""Generates the lists of brands in Suv category each of which contains evailable model names"""
+try:
+    connect = psycopg2.connect(database = 'car_rental', 
+                                user = 'postgres', 
+                                password = db_pass)
+    curs = connect.cursor()
+    
+    #iteration that creates the list contains all models available for every single brand with name '{category}_{brand.lower()}' 
+    #                                                                                      (in this case: suv_{brand.lower()})
+    temp_var = ''
+    for brand in suv_brands_list:
+        curs.execute("""SELECT DISTINCT model
+                        FROM fleet
+                        WHERE category = %s and brand = %s""", ('suv', f'{brand}'))
+        expres = [x[0] for x in curs.fetchall()] 
+        temp_var+=f"suv_{brand.lower()} = {expres}\n"
+        exec(temp_var)
+
+finally:
+    curs.close()
+    connect.close()
+
+
+"""Generates the lists of brands in Minivan category each of which contains evailable model names"""
+try:
+    connect = psycopg2.connect(database = 'car_rental', 
+                                user = 'postgres', 
+                                password = db_pass)
+    curs = connect.cursor()
+    
+    #iteration that creates the list contains all models available for every single brand with name '{category}_{brand.lower()}' 
+    #                                                                                      (in this case: minivan_{brand.lower()})
+    temp_var = ''
+    for brand in minivan_brands_list:
+        curs.execute("""SELECT DISTINCT model
+                        FROM fleet
+                        WHERE category = %s and brand = %s""", ('minivan', f'{brand}'))
+        expres = [x[0] for x in curs.fetchall()] 
+        temp_var+=f"minivan_{brand.lower()} = {expres}\n"
+        exec(temp_var)
+
+finally:
+    curs.close()
+    connect.close()
