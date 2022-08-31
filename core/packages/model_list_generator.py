@@ -1,8 +1,8 @@
 import psycopg2
 from config import db_pass
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
-from brand_buttons_generator import economy_brands_list, middle_brands_list, business_brands_list
-from brand_buttons_generator import premium_brands_list, suv_brands_list, minivan_brands_list
+from brand_button_generator import economy_brands_list, middle_brands_list, business_brands_list
+from brand_button_generator import premium_brands_list, suv_brands_list, minivan_brands_list
 
 
 
