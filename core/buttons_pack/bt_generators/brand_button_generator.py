@@ -1,5 +1,5 @@
 import psycopg2
-from config import db_pass
+#from config import db_pass
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
 
 
@@ -10,8 +10,8 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemo
 # Fetching the list of economy cars category to hand over to button generating function
 try:
     connect = psycopg2.connect(database = 'car_rental', 
-                        user = 'postgres', 
-                        password = db_pass)
+                                user = 'postgres', 
+                                password = 'datapass')
     curs = connect.cursor()
     curs.execute("""SELECT DISTINCT brand
                     FROM fleet
@@ -32,15 +32,15 @@ def economy_bt_generator():
     """  
     final_expression = 'InlineKeyboardMarkup()'
     for variable in economy_brands_list:
-        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="{variable.lower()}_economy"))'
+        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="economy_{variable.lower()}"))'
     return eval(final_expression)
 
 
 # Fetching the list of middle cars category to hand over to button generating function
 try:
     connect = psycopg2.connect(database = 'car_rental', 
-                        user = 'postgres', 
-                        password = db_pass)
+                                user = 'postgres', 
+                                password = 'datapass')
     curs = connect.cursor()
     curs.execute("""SELECT DISTINCT brand
                     FROM fleet
@@ -61,15 +61,15 @@ def middle_bt_generator():
     """   
     final_expression = 'InlineKeyboardMarkup()'
     for variable in middle_brands_list:
-        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="{variable.lower()}_middle"))'
+        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="middle_{variable.lower()}"))'
     return eval(final_expression)
 
 
 # Fetching the list of business cars category to hand over to button generating function
 try:
     connect = psycopg2.connect(database = 'car_rental', 
-                        user = 'postgres', 
-                        password = db_pass)
+                                user = 'postgres', 
+                                password = 'datapass')
     curs = connect.cursor()
     curs.execute("""SELECT DISTINCT brand
                     FROM fleet
@@ -90,14 +90,14 @@ def business_bt_generator():
     """   
     final_expression = 'InlineKeyboardMarkup()'
     for variable in business_brands_list:
-        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="{variable.lower()}_business"))'
+        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="business_{variable.lower()}"))'
     return eval(final_expression)
 
 # Fetching the list of premium cars category to hand over to button generating function
 try:
     connect = psycopg2.connect(database = 'car_rental', 
-                        user = 'postgres', 
-                        password = db_pass)
+                                user = 'postgres', 
+                                password = 'datapass')
     curs = connect.cursor()
     curs.execute("""SELECT DISTINCT brand
                     FROM fleet
@@ -118,14 +118,14 @@ def premium_bt_generator():
     """  
     final_expression = 'InlineKeyboardMarkup()'
     for variable in premium_brands_list:
-        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="{variable.lower()}_premium"))'
+        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="premium_{variable.lower()}"))'
     return eval(final_expression)
 
 # Fetching the list of suv cars category to hand over to button generating function
 try:
     connect = psycopg2.connect(database = 'car_rental', 
-                        user = 'postgres', 
-                        password = db_pass)
+                                user = 'postgres', 
+                                password = 'datapass')
     curs = connect.cursor()
     curs.execute("""SELECT DISTINCT brand
                     FROM fleet
@@ -146,14 +146,14 @@ def suv_bt_generator():
     """   
     final_expression = 'InlineKeyboardMarkup()'
     for variable in suv_brands_list:
-        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="{variable.lower()}_suv"))'
+        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="suv_{variable.lower()}"))'
     return eval(final_expression)
 
 # Fetching the list of minivan cars category to hand over to button generating function
 try:
     connect = psycopg2.connect(database = 'car_rental', 
-                        user = 'postgres', 
-                        password = db_pass)
+                                user = 'postgres', 
+                                password = 'datapass')
     curs = connect.cursor()
     curs.execute("""SELECT DISTINCT brand
                     FROM fleet
@@ -174,5 +174,5 @@ def minivan_bt_generator():
     """  
     final_expression = 'InlineKeyboardMarkup()'
     for variable in minivan_brands_list:
-        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="{variable.lower()}_minivan"))'
+        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="minivan_{variable.lower()}"))'
     return eval(final_expression)

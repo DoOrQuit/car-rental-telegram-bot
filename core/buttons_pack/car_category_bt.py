@@ -1,4 +1,5 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
+from core.buttons_pack.bt_generators.model_button_generator import model_bt_generator
 from core.buttons_pack.bt_generators.brand_button_generator import economy_bt_generator, middle_bt_generator, business_bt_generator
 from core.buttons_pack.bt_generators.brand_button_generator import premium_bt_generator, suv_bt_generator, minivan_bt_generator
 
@@ -56,3 +57,6 @@ minivan_byprice_inline_bt = InlineKeyboardButton('Filter by Price', callback_dat
 minivan_inline_filters_buttons = InlineKeyboardMarkup().row(minivan_cars_inline_bt, minivan_byprice_inline_bt)
 """Minivan Secondary menu"""
 minivan_brands_inline = minivan_bt_generator()
+
+
+vw_test = model_bt_generator()
