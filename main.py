@@ -1,12 +1,15 @@
 import asyncio
+from cgitb import text
 from config import TOKEN
 from datetime import datetime
 import psycopg2
 import aiogram
 from aiogram import Bot, Dispatcher, executor, types
+from aiogram.dispatcher.filters import Text
 from core.buttons_pack import essential_bt as kb
 from core.buttons_pack import car_category_bt as ct_kb
-#from core.buttons_pack.bt_generators.model_button_generator import model_bt_generator
+from core.buttons_pack.bt_generators.model_button_generator import economy_mdls_bt_generator
+
 
 
 
@@ -56,18 +59,23 @@ async def category_identifier(message : types.Message):
                                                 " or send me message with the brand/model You like", reply_markup=kb.category_buttons)
     
 
+"""Economy Section of message and callback handlers"""
 @dp.message_handler(lambda message : 'economy' in message.text.lower())
 async def economy_category(message : types.Message):
     await message.reply('Economy category\n(15$ - 45$)\n'
                         'Please, use the buttons to navigate \U00002B07',reply_markup=ct_kb.economy_inline_filters_buttons)
 
 @dp.callback_query_handler(text='economy_cars_show')
-async def economy_filters_inline(callback: types.CallbackQuery):
+async def economy_cars_inline(callback: types.CallbackQuery):
     await callback.message.reply("Brands available in this category \U00002B07", reply_markup=ct_kb.economy_brands_inline)
 
-@dp.callback_query_handler(text='economy_vw')
-async def economy_filters_inline(callback: types.CallbackQuery):
-    await callback.message.reply("test \U00002B07", reply_markup=ct_kb.vw_test)
+
+@dp.callback_query_handler(Text(startswith='economy_'))
+async def economy_models_inline(callback: types.CallbackQuery):
+    brand_choosen = callback.data.split('_')
+    await callback.message.reply("Models available \U00002B07", reply_markup=economy_mdls_bt_generator(brand_choosen[1]))
+    
+
 
 
 
@@ -138,3 +146,4 @@ async def echo_reply(message : types.Message):
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
+    
