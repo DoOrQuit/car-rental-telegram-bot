@@ -74,6 +74,10 @@ async def economy_cars_inline(callback: types.CallbackQuery):
 async def economy_models_inline(callback: types.CallbackQuery):
     brand_choosen = callback.data.split('_')
     await callback.message.reply("Models available \U00002B07", reply_markup=economy_mdls_bt_generator(brand_choosen[1]))
+
+# @dp.callback_query_handler(Text(startswith='ecnm_'))
+# async def ecnm_model_info(callback: types.CallbackQuery):
+#     #model_ident = (callback.data.split('_'))[]
     
 
 
