@@ -1,8 +1,8 @@
 import asyncio
-from cgitb import text
+from core.car_info_img.model_info import car_info
 from config import TOKEN
 from datetime import datetime
-import psycopg2
+
 import aiogram
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.filters import Text
@@ -75,9 +75,13 @@ async def economy_models_inline(callback: types.CallbackQuery):
     brand_choosen = callback.data.split('_')
     await callback.message.reply("Models available \U00002B07", reply_markup=economy_mdls_bt_generator(brand_choosen[1]))
 
-# @dp.callback_query_handler(Text(startswith='ecnm_'))
-# async def ecnm_model_info(callback: types.CallbackQuery):
-#     #model_ident = (callback.data.split('_'))[]
+@dp.callback_query_handler(Text(startswith='ecnm_'))
+async def ecnm_model_info(callback: types.CallbackQuery):
+    model_choosen = callback.data.split('_')
+    await callback.message.reply(f"Here is some car's info for\n\n{(model_choosen[1]).capitalize()} {(model_choosen[2]).capitalize()}:\
+                                \n\n{car_info(model_choosen[0] ,model_choosen[1], model_choosen[2])}")
+    
+     
     
 
 
