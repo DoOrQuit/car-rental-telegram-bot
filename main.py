@@ -8,9 +8,8 @@ from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.filters import Text
 from core.buttons_pack import essential_bt as kb
 from core.buttons_pack import car_category_bt as ct_kb
-from core.buttons_pack.bt_generators.model_button_generator import economy_mdls_bt_generator
-
-
+from core.buttons_pack.bt_generators.model_button_generator import *
+from core.buttons_pack.bt_generators.model_list_generator import *
 
 
 bot = aiogram.Bot(token=TOKEN)
@@ -51,6 +50,7 @@ async def assistant_contact(message : types.Message):
 
 
 """Identifies the category for building the class object and branching the dialog relating to renting filters"""
+
 @dp.message_handler(lambda message : 'rent' in message.text.lower())
 async def category_identifier(message : types.Message):
     await message.reply("Sure! We'll find a perfect car for You!")
@@ -60,6 +60,8 @@ async def category_identifier(message : types.Message):
     
 
 """Economy Section of message and callback handlers"""
+
+
 @dp.message_handler(lambda message : 'economy' in message.text.lower())
 async def economy_category(message : types.Message):
     await message.reply('Economy category\n(15$ - 45$)\n'
@@ -68,6 +70,7 @@ async def economy_category(message : types.Message):
 @dp.callback_query_handler(text='economy_cars_show')
 async def economy_cars_inline(callback: types.CallbackQuery):
     await callback.message.reply("Brands available in this category \U00002B07", reply_markup=ct_kb.economy_brands_inline)
+    
 
 
 @dp.callback_query_handler(Text(startswith='economy_'))
@@ -80,28 +83,36 @@ async def ecnm_model_info(callback: types.CallbackQuery):
     model_choosen = callback.data.split('_')
     await callback.message.reply(f"Here is some car's info for\n\n{(model_choosen[1]).capitalize()} {(model_choosen[2]).capitalize()}:\
                                 \n\n{car_info(model_choosen[0] ,model_choosen[1], model_choosen[2])}")
+
+
+
+"""Middle Section of message and callback handlers"""
                             
-    
-    
-     
-    
-
-
-
-
-
-
-
-
 
 @dp.message_handler(lambda message : 'middle' in message.text.lower())
 async def middle_category(message : types.Message):
     await message.reply('Middle category\n(30$ - 70$)\n'
                         'Please, use the buttons to navigate \U00002B07',reply_markup=ct_kb.middle_inline_filters_buttons)
+#middle_list_gen()
 
 @dp.callback_query_handler(text='middle_cars_show')
 async def middle_filters_inline(callback: types.CallbackQuery):
     await callback.message.reply("Brands available in this category \U00002B07", reply_markup=ct_kb.middle_brands_inline)
+
+@dp.callback_query_handler(Text(startswith='middle_'))
+async def middle_models_inline(callback: types.CallbackQuery):
+    brand_choosen = callback.data.split('_')
+    await callback.message.reply("Models available \U00002B07", reply_markup=middle_mdls_bt_generator(brand_choosen[1]))
+
+@dp.callback_query_handler(Text(startswith='mdl_'))
+async def mdl_model_info(callback: types.CallbackQuery):
+    model_choosen = callback.data.split('_')
+    await callback.message.reply(f"Here is some car's info for\n\n{(model_choosen[1]).capitalize()} {(model_choosen[2]).capitalize()}:\
+                                \n\n{car_info(model_choosen[0] ,model_choosen[1], model_choosen[2])}")
+
+
+"""Business Section of message and callback handlers"""
+                            
 
 @dp.message_handler(lambda message : 'business' in message.text.lower())
 async def business_category(message : types.Message):
@@ -112,6 +123,21 @@ async def business_category(message : types.Message):
 async def business_filters_inline(callback: types.CallbackQuery):
     await callback.message.reply("Brands available in this category \U00002B07", reply_markup=ct_kb.business_brands_inline)
 
+@dp.callback_query_handler(Text(startswith='business_'))
+async def business_models_inline(callback: types.CallbackQuery):
+    brand_choosen = callback.data.split('_')
+    await callback.message.reply("Models available \U00002B07", reply_markup=business_mdls_bt_generator(brand_choosen[1]))
+
+@dp.callback_query_handler(Text(startswith='bsns_'))
+async def bsns_model_info(callback: types.CallbackQuery):
+    model_choosen = callback.data.split('_')
+    await callback.message.reply(f"Here is some car's info for\n\n{(model_choosen[1]).capitalize()} {(model_choosen[2]).capitalize()}:\
+                                \n\n{car_info(model_choosen[0] ,model_choosen[1], model_choosen[2])}")
+
+
+"""Premium Section of message and callback handlers"""
+                            
+
 @dp.message_handler(lambda message : 'premium' in message.text.lower())
 async def premium_category(message : types.Message):
     await message.reply('Premium category\n(Starts from 85$)\n'
@@ -120,6 +146,21 @@ async def premium_category(message : types.Message):
 @dp.callback_query_handler(text='premium_cars_show')
 async def premium_filters_inline(callback: types.CallbackQuery):
     await callback.message.reply("Brands available in this category \U00002B07", reply_markup=ct_kb.premium_brands_inline)
+
+@dp.callback_query_handler(Text(startswith='premium_'))
+async def premium_models_inline(callback: types.CallbackQuery):
+    brand_choosen = callback.data.split('_')
+    await callback.message.reply("Models available \U00002B07", reply_markup=premium_mdls_bt_generator(brand_choosen[1]))
+
+@dp.callback_query_handler(Text(startswith='prem_'))
+async def prem_model_info(callback: types.CallbackQuery):
+    model_choosen = callback.data.split('_')
+    await callback.message.reply(f"Here is some car's info for\n\n{(model_choosen[1]).capitalize()} {(model_choosen[2]).capitalize()}:\
+                                \n\n{car_info(model_choosen[0] ,model_choosen[1], model_choosen[2])}")
+
+
+"""SUV Section of message and callback handlers"""
+                            
 
 @dp.message_handler(lambda message : 'suv' in message.text.lower())
 async def suv_category(message : types.Message):
@@ -130,6 +171,21 @@ async def suv_category(message : types.Message):
 async def suv_filters_inline(callback: types.CallbackQuery):
     await callback.message.reply("Brands available in this category \U00002B07", reply_markup=ct_kb.suv_brands_inline)
 
+@dp.callback_query_handler(Text(startswith='suv_'))
+async def middle_models_inline(callback: types.CallbackQuery):
+    brand_choosen = callback.data.split('_')
+    await callback.message.reply("Models available \U00002B07", reply_markup=suv_mdls_bt_generator(brand_choosen[1]))
+
+@dp.callback_query_handler(Text(startswith='sv_'))
+async def sv_model_info(callback: types.CallbackQuery):
+    model_choosen = callback.data.split('_')
+    await callback.message.reply(f"Here is some car's info for\n\n{(model_choosen[1]).capitalize()} {(model_choosen[2]).capitalize()}:\
+                                \n\n{car_info(model_choosen[0] ,model_choosen[1], model_choosen[2])}")
+
+
+"""Minivan Section of message and callback handlers"""
+                            
+
 @dp.message_handler(lambda message : 'minivan' in message.text.lower())
 async def minivan_category(message : types.Message):
     await message.reply('Minivan category\n(Starts from 33$)\n'
@@ -139,6 +195,16 @@ async def minivan_category(message : types.Message):
 async def minivan_filters_inline(callback: types.CallbackQuery):
     await callback.message.reply("Brands available in this category \U00002B07", reply_markup=ct_kb.minivan_brands_inline)
 
+@dp.callback_query_handler(Text(startswith='minivan_'))
+async def minivan_models_inline(callback: types.CallbackQuery):
+    brand_choosen = callback.data.split('_')
+    await callback.message.reply("Models available \U00002B07", reply_markup=minivan_mdls_bt_generator(brand_choosen[1]))
+
+@dp.callback_query_handler(Text(startswith='van_'))
+async def van_model_info(callback: types.CallbackQuery):
+    model_choosen = callback.data.split('_')
+    await callback.message.reply(f"Here is some car's info for\n\n{(model_choosen[1]).capitalize()} {(model_choosen[2]).capitalize()}:\
+                                \n\n{car_info(model_choosen[0] ,model_choosen[1], model_choosen[2])}")
       
         
 """Common echo replier"""

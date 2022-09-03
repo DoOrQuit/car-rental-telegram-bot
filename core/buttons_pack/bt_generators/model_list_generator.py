@@ -30,31 +30,31 @@ try:
 finally:
     curs.close()
     connect.close()
-    
+   
 
 
 """Generates the lists of brands in Middle category each of which contains evailable model names"""
-def middle_list_gen():
-    try:
-        connect = psycopg2.connect(database = 'car_rental', 
-                                    user = 'postgres', 
-                                    password = 'datapass')
-        curs = connect.cursor()
+#def middle_list_gen():
+try:
+    connect = psycopg2.connect(database = 'car_rental', 
+                                user = 'postgres', 
+                                password = 'datapass')
+    curs = connect.cursor()
+    
+    #iteration that creates the list contains all models available for every single brand with name '{category}_{brand.lower()}' 
+    #                                                                                      (in this case: middle_{brand.lower()})
+    temp_var = ''
+    for brand in middle_brands_list:
+        curs.execute("""SELECT DISTINCT model
+                        FROM fleet
+                        WHERE category = %s and brand = %s""", ('middle', f'{brand}'))
+        expres = [x[0] for x in curs.fetchall()] 
+        temp_var+=f"middle_{brand.lower()} = {expres}\n"
         
-        #iteration that creates the list contains all models available for every single brand with name '{category}_{brand.lower()}' 
-        #                                                                                      (in this case: middle_{brand.lower()})
-        temp_var = ''
-        for brand in middle_brands_list:
-            curs.execute("""SELECT DISTINCT model
-                            FROM fleet
-                            WHERE category = %s and brand = %s""", ('middle', f'{brand}'))
-            expres = [x[0] for x in curs.fetchall()] 
-            temp_var+=f"middle_{brand.lower()} = {expres}\n"
-            exec(temp_var)
 
-    finally:
-        curs.close()
-        connect.close()
+finally:
+    curs.close()
+    connect.close()
 
 
 """Generates the lists of brands in Business category each of which contains evailable model names"""
@@ -151,3 +151,8 @@ def minivan_list_gen():
     finally:
         curs.close()
         connect.close()
+
+
+if __name__ == '__main__':
+    print(economy_brands_list)
+    print(middle_brands_list)
