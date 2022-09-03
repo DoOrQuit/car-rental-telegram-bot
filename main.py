@@ -1,15 +1,15 @@
 import asyncio
-from core.car_info_img.model_info import car_info
 from config import TOKEN
 from datetime import datetime
 import aiogram
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.filters import Text
-from core.buttons_pack import essential_bt as kb
-from core.buttons_pack import car_category_bt as ct_kb
-from core.buttons_pack.bt_generators.brand_button_generator import *
-from core.buttons_pack.bt_generators.model_button_generator import economy_mdls_bt_generator, middle_mdls_bt_generator,suv_mdls_bt_generator
-from core.buttons_pack.bt_generators.model_button_generator import business_mdls_bt_generator, premium_mdls_bt_generator,minivan_mdls_bt_generator
+import essential_bt as kb
+import car_category_bt as ct_kb
+from model_list_generator import *
+from model_button_generator import economy_mdls_bt_generator, middle_mdls_bt_generator,suv_mdls_bt_generator
+from model_button_generator import business_mdls_bt_generator, premium_mdls_bt_generator,minivan_mdls_bt_generator
+from core.car_info_img.model_info import car_info
 
 
 bot = aiogram.Bot(token=TOKEN)
@@ -28,6 +28,12 @@ async def command_start(message : types.Message):
     elif 2359 > int(current_time) > 1600 :
         await bot.send_message(message.from_user.id, f"Good evening, {message.from_user.first_name}."
                                                     " Please, press one of the buttons below \U00002B07", reply_markup= kb.main_buttons)
+    economy_list_gen()
+    middle_list_gen()
+    business_list_gen()
+    premium_list_gen()
+    suv_list_gen()
+    minivan_list_gen()
 
 """Help Command"""
 @dp.message_handler(commands = ['help'])
@@ -54,7 +60,6 @@ async def assistant_contact(message : types.Message):
 @dp.message_handler(lambda message : 'rent' in message.text.lower())
 async def category_identifier(message : types.Message):
     await message.reply("Sure! We'll find a perfect car for You!")
-    await asyncio.sleep(2)
     await bot.send_message(message.from_user.id,"Please, use the menu \U00002B07 to find Your perfect car,"
                                                 " or send me message with the brand/model You like", reply_markup=kb.category_buttons)
     
@@ -93,7 +98,6 @@ async def ecnm_model_info(callback: types.CallbackQuery):
 async def middle_category(message : types.Message):
     await message.reply('Middle category\n(30$ - 70$)\n'
                         'Please, use the buttons to navigate \U00002B07',reply_markup=ct_kb.middle_inline_filters_buttons)
-#middle_list_gen()
 
 @dp.callback_query_handler(text='middle_cars_show')
 async def middle_filters_inline(callback: types.CallbackQuery):
@@ -221,5 +225,9 @@ async def echo_reply(message : types.Message):
 
 
 if __name__ == '__main__':
+
+
     executor.start_polling(dp, skip_updates=True)
+
+
     

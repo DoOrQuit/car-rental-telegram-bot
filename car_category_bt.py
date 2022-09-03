@@ -1,6 +1,6 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
-from core.buttons_pack.bt_generators.brand_button_generator import economy_bt_generator, middle_bt_generator, business_bt_generator
-from core.buttons_pack.bt_generators.brand_button_generator import premium_bt_generator, suv_bt_generator, minivan_bt_generator
+from brand_button_generator import economy_bt_generator, middle_bt_generator, business_bt_generator
+from brand_button_generator import premium_bt_generator, suv_bt_generator, minivan_bt_generator
 
 
 
