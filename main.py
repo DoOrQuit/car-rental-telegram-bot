@@ -80,6 +80,8 @@ async def ecnm_model_info(callback: types.CallbackQuery):
     model_choosen = callback.data.split('_')
     await callback.message.reply(f"Here is some car's info for\n\n{(model_choosen[1]).capitalize()} {(model_choosen[2]).capitalize()}:\
                                 \n\n{car_info(model_choosen[0] ,model_choosen[1], model_choosen[2])}")
+                            
+    
     
      
     
