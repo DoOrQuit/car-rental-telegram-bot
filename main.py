@@ -2,14 +2,14 @@ import asyncio
 from core.car_info_img.model_info import car_info
 from config import TOKEN
 from datetime import datetime
-
 import aiogram
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.filters import Text
 from core.buttons_pack import essential_bt as kb
 from core.buttons_pack import car_category_bt as ct_kb
-from core.buttons_pack.bt_generators.model_button_generator import *
-from core.buttons_pack.bt_generators.model_list_generator import *
+from core.buttons_pack.bt_generators.brand_button_generator import *
+from core.buttons_pack.bt_generators.model_button_generator import economy_mdls_bt_generator, middle_mdls_bt_generator,suv_mdls_bt_generator
+from core.buttons_pack.bt_generators.model_button_generator import business_mdls_bt_generator, premium_mdls_bt_generator,minivan_mdls_bt_generator
 
 
 bot = aiogram.Bot(token=TOKEN)
