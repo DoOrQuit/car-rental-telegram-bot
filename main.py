@@ -71,13 +71,13 @@ async def category_identifier(message : types.Message):
 async def economy_category(message : types.Message):
     await message.reply('Economy category\n(15$ - 45$)\n'
                         'Please, use the buttons to navigate \U00002B07',reply_markup=ct_kb.economy_inline_filters_buttons)
+    economy_list_gen()
 
 @dp.callback_query_handler(text='economy_cars_show')
 async def economy_cars_inline(callback: types.CallbackQuery):
     await callback.message.reply("Brands available in this category \U00002B07", reply_markup=ct_kb.economy_brands_inline)
     
-
-
+    
 @dp.callback_query_handler(Text(startswith='economy_'))
 async def economy_models_inline(callback: types.CallbackQuery):
     brand_choosen = callback.data.split('_')
@@ -86,8 +86,8 @@ async def economy_models_inline(callback: types.CallbackQuery):
 @dp.callback_query_handler(Text(startswith='ecnm_'))
 async def ecnm_model_info(callback: types.CallbackQuery):
     model_choosen = callback.data.split('_')
-    await callback.message.reply(f"Here is some car's info for\n\n{(model_choosen[1]).capitalize()} {(model_choosen[2]).capitalize()}:\
-                                \n\n{car_info(model_choosen[0] ,model_choosen[1], model_choosen[2])}")
+    await callback.message.reply(f"Here is some car's info for\n\n{model_choosen[1]} {model_choosen[2]}:\
+                                \n\n{car_info('economy' ,model_choosen[1], model_choosen[2])}")
 
 
 
@@ -111,8 +111,8 @@ async def middle_models_inline(callback: types.CallbackQuery):
 @dp.callback_query_handler(Text(startswith='mdl_'))
 async def mdl_model_info(callback: types.CallbackQuery):
     model_choosen = callback.data.split('_')
-    await callback.message.reply(f"Here is some car's info for\n\n{(model_choosen[1]).capitalize()} {(model_choosen[2]).capitalize()}:\
-                                \n\n{car_info(model_choosen[0] ,model_choosen[1], model_choosen[2])}")
+    await callback.message.reply(f"Here is some car's info for\n\n{model_choosen[1]} {model_choosen[2]}:\
+                                \n\n{car_info('middle' ,model_choosen[1], model_choosen[2])}")
 
 
 """Business Section of message and callback handlers"""
@@ -135,8 +135,8 @@ async def business_models_inline(callback: types.CallbackQuery):
 @dp.callback_query_handler(Text(startswith='bsns_'))
 async def bsns_model_info(callback: types.CallbackQuery):
     model_choosen = callback.data.split('_')
-    await callback.message.reply(f"Here is some car's info for\n\n{(model_choosen[1]).capitalize()} {(model_choosen[2]).capitalize()}:\
-                                \n\n{car_info(model_choosen[0] ,model_choosen[1], model_choosen[2])}")
+    await callback.message.reply(f"Here is some car's info for\n\n{model_choosen[1]} {model_choosen[2]}:\
+                                \n\n{car_info('business' ,model_choosen[1], model_choosen[2])}")
 
 
 """Premium Section of message and callback handlers"""
@@ -159,8 +159,8 @@ async def premium_models_inline(callback: types.CallbackQuery):
 @dp.callback_query_handler(Text(startswith='prem_'))
 async def prem_model_info(callback: types.CallbackQuery):
     model_choosen = callback.data.split('_')
-    await callback.message.reply(f"Here is some car's info for\n\n{(model_choosen[1]).capitalize()} {(model_choosen[2]).capitalize()}:\
-                                \n\n{car_info(model_choosen[0] ,model_choosen[1], model_choosen[2])}")
+    await callback.message.reply(f"Here is some car's info for\n\n{model_choosen[1]} {model_choosen[2]}:\
+                                \n\n{car_info('premium' ,model_choosen[1], model_choosen[2])}")
 
 
 """SUV Section of message and callback handlers"""
@@ -183,8 +183,8 @@ async def middle_models_inline(callback: types.CallbackQuery):
 @dp.callback_query_handler(Text(startswith='sv_'))
 async def sv_model_info(callback: types.CallbackQuery):
     model_choosen = callback.data.split('_')
-    await callback.message.reply(f"Here is some car's info for\n\n{(model_choosen[1]).capitalize()} {(model_choosen[2]).capitalize()}:\
-                                \n\n{car_info(model_choosen[0] ,model_choosen[1], model_choosen[2])}")
+    await callback.message.reply(f"Here is some car's info for\n\n{model_choosen[1]} {model_choosen[2]}:\
+                                \n\n{car_info('suv' ,model_choosen[1], model_choosen[2])}")
 
 
 """Minivan Section of message and callback handlers"""
@@ -207,8 +207,8 @@ async def minivan_models_inline(callback: types.CallbackQuery):
 @dp.callback_query_handler(Text(startswith='van_'))
 async def van_model_info(callback: types.CallbackQuery):
     model_choosen = callback.data.split('_')
-    await callback.message.reply(f"Here is some car's info for\n\n{(model_choosen[1]).capitalize()} {(model_choosen[2]).capitalize()}:\
-                                \n\n{car_info(model_choosen[0] ,model_choosen[1], model_choosen[2])}")
+    await callback.message.reply(f"Here is some car's info for\n\n{model_choosen[1]} {model_choosen[2]}:\
+                                \n\n{car_info('minivan' ,model_choosen[1], model_choosen[2])}")
       
         
 """Common echo replier"""
@@ -225,8 +225,6 @@ async def echo_reply(message : types.Message):
 
 
 if __name__ == '__main__':
-
-
     executor.start_polling(dp, skip_updates=True)
 
 

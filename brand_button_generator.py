@@ -6,7 +6,6 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemo
 
 """This file contains supportive functions"""
 
-
 # Fetching the list of economy cars category to hand over to button generating function
 try:
     connect = psycopg2.connect(database = 'car_rental', 
@@ -32,7 +31,7 @@ def economy_bt_generator():
     """  
     final_expression = 'InlineKeyboardMarkup()'
     for variable in economy_brands_list:
-        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="economy_{variable.lower()}"))'
+        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="economy_{variable}"))'
     return eval(final_expression)
 
 
@@ -61,7 +60,7 @@ def middle_bt_generator():
     """   
     final_expression = 'InlineKeyboardMarkup()'
     for variable in middle_brands_list:
-        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="middle_{variable.lower()}"))'
+        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="middle_{variable}"))'
     return eval(final_expression)
 
 
@@ -90,7 +89,7 @@ def business_bt_generator():
     """   
     final_expression = 'InlineKeyboardMarkup()'
     for variable in business_brands_list:
-        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="business_{variable.lower()}"))'
+        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="business_{variable}"))'
     return eval(final_expression)
 
 # Fetching the list of premium cars category to hand over to button generating function
@@ -118,7 +117,7 @@ def premium_bt_generator():
     """  
     final_expression = 'InlineKeyboardMarkup()'
     for variable in premium_brands_list:
-        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="premium_{variable.lower()}"))'
+        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="premium_{variable}"))'
     return eval(final_expression)
 
 # Fetching the list of suv cars category to hand over to button generating function
@@ -146,7 +145,7 @@ def suv_bt_generator():
     """   
     final_expression = 'InlineKeyboardMarkup()'
     for variable in suv_brands_list:
-        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="suv_{variable.lower()}"))'
+        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="suv_{variable}"))'
     return eval(final_expression)
 
 # Fetching the list of minivan cars category to hand over to button generating function
@@ -174,5 +173,5 @@ def minivan_bt_generator():
     """  
     final_expression = 'InlineKeyboardMarkup()'
     for variable in minivan_brands_list:
-        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="minivan_{variable.lower()}"))'
+        final_expression += f'.add(InlineKeyboardButton("{variable}", callback_data="minivan_{variable}"))'
     return eval(final_expression)
