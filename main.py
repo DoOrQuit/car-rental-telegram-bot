@@ -1,5 +1,6 @@
 import asyncio
 from config import TOKEN
+from core.car_info_img.img_attacher import img_loader
 from datetime import datetime
 import aiogram
 from aiogram import Bot, Dispatcher, executor, types
@@ -45,7 +46,6 @@ async def command_help(message : types.Message):
 async def command_contacts(message : types.Message):
     await bot.send_message(message.from_user.id, "Office address: b.125 Myra Street, Kyiv\nPhone Number: +380123456789"
                                                 "\nEmail: test@rentals.ua", reply_markup=kb.main_buttons)
-
 
 """Assistant Call. Reacts for text in chat"""
 @dp.message_handler(lambda message : 'assistant' in message.text.lower())
@@ -207,7 +207,10 @@ async def minivan_models_inline(callback: types.CallbackQuery):
 @dp.callback_query_handler(Text(startswith='van_'))
 async def van_model_info(callback: types.CallbackQuery):
     model_choosen = callback.data.split('_')
-    await callback.message.reply(f"Here is some car's info for\n\n{model_choosen[1]} {model_choosen[2]}:\
+    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(model_choosen[1], model_choosen[-1]))
+    img_loader(model_choosen[1], model_choosen[-1]).seek(0)
+    img_loader(model_choosen[1], model_choosen[-1]).close()
+    await callback.message.answer(f"Here is some car's info for\n\n{model_choosen[1]} {model_choosen[2]}:\
                                 \n\n{car_info('minivan' ,model_choosen[1], model_choosen[2])}")
       
         

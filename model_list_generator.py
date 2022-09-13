@@ -102,14 +102,15 @@ def premium_list_gen():
                                     password = 'datapass')
         curs = connect.cursor()
         
-        #iteration that creates the lists contains all models available for every single brand with name '{category}_{brand.lower()}' 
-        #                                                                                      (in this case: premium_{brand.lower()})
+        #iteration that creates the lists contains all models available for every single brand with name '{category}_{brand}' 
+        #                                                                                      (in this case: premium_{brand})
         for brand in premium_brands_list:
             curs.execute("""SELECT DISTINCT model
                             FROM fleet
                             WHERE category = %s and brand = %s""", ('premium', f'{brand}'))
             expres = [x[0] for x in curs.fetchall()]
             premium_brands_dict[f"premium_{brand}"] = expres
+
         
     finally:
         curs.close()
@@ -156,13 +157,13 @@ def minivan_list_gen():
                                     password = 'datapass')
         curs = connect.cursor()
         
-        #iteration that creates the lists contains all models available for every single brand with name '{category}_{brand.lower()}' 
-        #                                                                                      (in this case: minivan_{brand.lower()})
+        #iteration that creates the lists contains all models available for every single brand with name '{category}_{brand}' 
+        #                                                                                      (in this case: minivan_{brand})
         for brand in minivan_brands_list:
-            curs.execute("""SELECT DISTINCT model
+            curs.execute("""SELECT DISTINCT model, car_id
                             FROM fleet
                             WHERE sub_category = %s and brand = %s""", ('minivan', f'{brand}'))
-            expres = [x[0] for x in curs.fetchall()]
+            expres = [x for x in curs.fetchall()]
             minivan_brands_dict[f"minivan_{brand}"] = expres
         
     finally:

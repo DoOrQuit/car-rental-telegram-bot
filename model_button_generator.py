@@ -71,7 +71,8 @@ def minivan_mdls_bt_generator(brand:str):
     final_expression = 'InlineKeyboardMarkup()'
     
     for model in minivan_list_gen().get(f'minivan_{brand}'):
-        final_expression += f'.add(InlineKeyboardButton("{model}", callback_data="van_{brand}_{model}"))'
+        final_expression += f'.add(InlineKeyboardButton("{model[0]}", callback_data="van_{brand}_{model[0]}_{model[1]}"))'
     return eval(final_expression)
+
 
 
