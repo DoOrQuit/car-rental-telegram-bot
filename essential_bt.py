@@ -33,6 +33,10 @@ category_buttons.row(economy_bt, middle_bt, business_bt)
 category_buttons.row(premium_bt)
 category_buttons.row(suv_bt, minivan_bt)
 
+"""Order Section"""
+order_bt = InlineKeyboardMarkup().add(InlineKeyboardButton("Order", url="https://support.apple.com/uk-ua/HT204506"))
+
+
 
 
 

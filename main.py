@@ -86,8 +86,11 @@ async def economy_models_inline(callback: types.CallbackQuery):
 @dp.callback_query_handler(Text(startswith='ecnm_'))
 async def ecnm_model_info(callback: types.CallbackQuery):
     model_choosen = callback.data.split('_')
-    await callback.message.reply(f"Here is some car's info for\n\n{model_choosen[1]} {model_choosen[2]}:\
-                                \n\n{car_info('economy' ,model_choosen[1], model_choosen[2])}")
+    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(model_choosen[1], model_choosen[-1]), 
+                                caption=f"{model_choosen[1]} {model_choosen[2]}:\
+                                \n\n{car_info('economy' ,model_choosen[1], model_choosen[2])}", reply_markup=kb.order_bt)
+    img_loader(model_choosen[1], model_choosen[-1]).seek(0)
+    img_loader(model_choosen[1], model_choosen[-1]).close()
 
 
 
@@ -111,8 +114,11 @@ async def middle_models_inline(callback: types.CallbackQuery):
 @dp.callback_query_handler(Text(startswith='mdl_'))
 async def mdl_model_info(callback: types.CallbackQuery):
     model_choosen = callback.data.split('_')
-    await callback.message.reply(f"Here is some car's info for\n\n{model_choosen[1]} {model_choosen[2]}:\
-                                \n\n{car_info('middle' ,model_choosen[1], model_choosen[2])}")
+    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(model_choosen[1], model_choosen[-1]), 
+                                caption=f"{model_choosen[1]} {model_choosen[2]}:\
+                                \n\n{car_info('middle' ,model_choosen[1], model_choosen[2])}", reply_markup=kb.order_bt)
+    img_loader(model_choosen[1], model_choosen[-1]).seek(0)
+    img_loader(model_choosen[1], model_choosen[-1]).close()
 
 
 """Business Section of message and callback handlers"""
@@ -135,8 +141,11 @@ async def business_models_inline(callback: types.CallbackQuery):
 @dp.callback_query_handler(Text(startswith='bsns_'))
 async def bsns_model_info(callback: types.CallbackQuery):
     model_choosen = callback.data.split('_')
-    await callback.message.reply(f"Here is some car's info for\n\n{model_choosen[1]} {model_choosen[2]}:\
-                                \n\n{car_info('business' ,model_choosen[1], model_choosen[2])}")
+    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(model_choosen[1], model_choosen[-1]), 
+                                caption=f"{model_choosen[1]} {model_choosen[2]}:\
+                                \n\n{car_info('business' ,model_choosen[1], model_choosen[2])}", reply_markup=kb.order_bt)
+    img_loader(model_choosen[1], model_choosen[-1]).seek(0)
+    img_loader(model_choosen[1], model_choosen[-1]).close()
 
 
 """Premium Section of message and callback handlers"""
@@ -159,8 +168,11 @@ async def premium_models_inline(callback: types.CallbackQuery):
 @dp.callback_query_handler(Text(startswith='prem_'))
 async def prem_model_info(callback: types.CallbackQuery):
     model_choosen = callback.data.split('_')
-    await callback.message.reply(f"Here is some car's info for\n\n{model_choosen[1]} {model_choosen[2]}:\
-                                \n\n{car_info('premium' ,model_choosen[1], model_choosen[2])}")
+    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(model_choosen[1], model_choosen[-1]), 
+                                caption=f"{model_choosen[1]} {model_choosen[2]}:\
+                                \n\n{car_info('premium' ,model_choosen[1], model_choosen[2])}", reply_markup=kb.order_bt)
+    img_loader(model_choosen[1], model_choosen[-1]).seek(0)
+    img_loader(model_choosen[1], model_choosen[-1]).close()
 
 
 """SUV Section of message and callback handlers"""
@@ -183,8 +195,11 @@ async def middle_models_inline(callback: types.CallbackQuery):
 @dp.callback_query_handler(Text(startswith='sv_'))
 async def sv_model_info(callback: types.CallbackQuery):
     model_choosen = callback.data.split('_')
-    await callback.message.reply(f"Here is some car's info for\n\n{model_choosen[1]} {model_choosen[2]}:\
-                                \n\n{car_info('suv' ,model_choosen[1], model_choosen[2])}")
+    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(model_choosen[1], model_choosen[-1]), 
+                                caption=f"{model_choosen[1]} {model_choosen[2]}:\
+                                \n\n{car_info('suv' ,model_choosen[1], model_choosen[2])}", reply_markup=kb.order_bt)
+    img_loader(model_choosen[1], model_choosen[-1]).seek(0)
+    img_loader(model_choosen[1], model_choosen[-1]).close()
 
 
 """Minivan Section of message and callback handlers"""
@@ -207,11 +222,12 @@ async def minivan_models_inline(callback: types.CallbackQuery):
 @dp.callback_query_handler(Text(startswith='van_'))
 async def van_model_info(callback: types.CallbackQuery):
     model_choosen = callback.data.split('_')
-    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(model_choosen[1], model_choosen[-1]))
+    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(model_choosen[1], model_choosen[-1]), 
+                                caption=f"{model_choosen[1]} {model_choosen[2]}:\
+                                \n\n{car_info('minivan' ,model_choosen[1], model_choosen[2])}", reply_markup=kb.order_bt)
     img_loader(model_choosen[1], model_choosen[-1]).seek(0)
     img_loader(model_choosen[1], model_choosen[-1]).close()
-    await callback.message.answer(f"Here is some car's info for\n\n{model_choosen[1]} {model_choosen[2]}:\
-                                \n\n{car_info('minivan' ,model_choosen[1], model_choosen[2])}")
+
       
         
 """Common echo replier"""
