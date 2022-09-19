@@ -8,8 +8,8 @@ from aiogram.dispatcher.filters import Text
 import essential_bt as kb
 import car_category_bt as ct_kb
 from model_list_generator import *
-from model_button_generator import economy_mdls_bt_generator, middle_mdls_bt_generator,suv_mdls_bt_generator
-from model_button_generator import business_mdls_bt_generator, premium_mdls_bt_generator,minivan_mdls_bt_generator
+from model_button_generator import mdls_bt_generator
+from brand_button_generator import brands_bt_generator
 from core.car_info_img.model_info import car_info
 
 
@@ -29,12 +29,18 @@ async def command_start(message : types.Message):
     elif 2359 > int(current_time) > 1600 :
         await bot.send_message(message.from_user.id, f"Good evening, {message.from_user.first_name}."
                                                     " Please, press one of the buttons below \U00002B07", reply_markup= kb.main_buttons)
-    economy_list_gen()
-    middle_list_gen()
-    business_list_gen()
-    premium_list_gen()
-    suv_list_gen()
-    minivan_list_gen()
+    brands_list_gen('economy')
+    brands_list_gen('middle')
+    brands_list_gen('business')
+    brands_list_gen('premium')
+    brands_list_gen('suv')
+    brands_list_gen('minivan')
+    
+    # middle_list_gen()
+    # business_list_gen()
+    # premium_list_gen()
+    # suv_list_gen()
+    # minivan_list_gen()
 
 """Help Command"""
 @dp.message_handler(commands = ['help'])
@@ -48,7 +54,11 @@ async def command_contacts(message : types.Message):
                                                 "\nEmail: test@rentals.ua", reply_markup=kb.main_buttons)
 
 """Assistant Call. Reacts for text in chat"""
-@dp.message_handler(lambda message : 'assistant' in message.text.lower())
+@dp.message_handler(lambda message : 'assist' in message.text.lower())
+async def assistant_contact(message : types.Message):
+    await message.reply("Customers support contact 24/7\n+380991234567")
+    await bot.send_message(message.from_user.id,'Hope I could help', reply_markup=kb.main_buttons)
+@dp.message_handler(lambda message : 'help' in message.text.lower())
 async def assistant_contact(message : types.Message):
     await message.reply("Customers support contact 24/7\n+380991234567")
     await bot.send_message(message.from_user.id,'Hope I could help', reply_markup=kb.main_buttons)
@@ -60,8 +70,7 @@ async def assistant_contact(message : types.Message):
 @dp.message_handler(lambda message : 'rent' in message.text.lower())
 async def category_identifier(message : types.Message):
     await message.reply("Sure! We'll find a perfect car for You!")
-    await bot.send_message(message.from_user.id,"Please, use the menu \U00002B07 to find Your perfect car,"
-                                                " or send me message with the brand/model You like", reply_markup=kb.category_buttons)
+    await bot.send_message(message.from_user.id,"Please, use the menu \U00002B07 to find Your perfect car", reply_markup=kb.category_buttons)
     
 
 """Economy Section of message and callback handlers"""
@@ -71,17 +80,16 @@ async def category_identifier(message : types.Message):
 async def economy_category(message : types.Message):
     await message.reply('Economy category\n(15$ - 45$)\n'
                         'Please, use the buttons to navigate \U00002B07',reply_markup=ct_kb.economy_inline_filters_buttons)
-    economy_list_gen()
 
 @dp.callback_query_handler(text='economy_cars_show')
 async def economy_cars_inline(callback: types.CallbackQuery):
-    await callback.message.reply("Brands available in this category \U00002B07", reply_markup=ct_kb.economy_brands_inline)
+    await callback.message.reply(f"Brands in Economy category\U00002B07", reply_markup=brands_bt_generator('economy'))
     
     
 @dp.callback_query_handler(Text(startswith='economy_'))
 async def economy_models_inline(callback: types.CallbackQuery):
     brand_choosen = callback.data.split('_')
-    await callback.message.reply("Models available \U00002B07", reply_markup=economy_mdls_bt_generator(brand_choosen[1]))
+    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(brand_choosen[0], brand_choosen[1]))
 
 @dp.callback_query_handler(Text(startswith='ecnm_'))
 async def ecnm_model_info(callback: types.CallbackQuery):
@@ -104,12 +112,12 @@ async def middle_category(message : types.Message):
 
 @dp.callback_query_handler(text='middle_cars_show')
 async def middle_filters_inline(callback: types.CallbackQuery):
-    await callback.message.reply("Brands available in this category \U00002B07", reply_markup=ct_kb.middle_brands_inline)
+    await callback.message.reply("Brands in Middle category \U00002B07", reply_markup=brands_bt_generator('middle'))
 
 @dp.callback_query_handler(Text(startswith='middle_'))
 async def middle_models_inline(callback: types.CallbackQuery):
     brand_choosen = callback.data.split('_')
-    await callback.message.reply("Models available \U00002B07", reply_markup=middle_mdls_bt_generator(brand_choosen[1]))
+    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(brand_choosen[0], brand_choosen[1]))
 
 @dp.callback_query_handler(Text(startswith='mdl_'))
 async def mdl_model_info(callback: types.CallbackQuery):
@@ -131,12 +139,12 @@ async def business_category(message : types.Message):
 
 @dp.callback_query_handler(text='business_cars_show')
 async def business_filters_inline(callback: types.CallbackQuery):
-    await callback.message.reply("Brands available in this category \U00002B07", reply_markup=ct_kb.business_brands_inline)
+    await callback.message.reply("Brands in Business category \U00002B07", reply_markup=brands_bt_generator('business'))
 
 @dp.callback_query_handler(Text(startswith='business_'))
 async def business_models_inline(callback: types.CallbackQuery):
     brand_choosen = callback.data.split('_')
-    await callback.message.reply("Models available \U00002B07", reply_markup=business_mdls_bt_generator(brand_choosen[1]))
+    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(brand_choosen[0],brand_choosen[1]))
 
 @dp.callback_query_handler(Text(startswith='bsns_'))
 async def bsns_model_info(callback: types.CallbackQuery):
@@ -158,12 +166,12 @@ async def premium_category(message : types.Message):
 
 @dp.callback_query_handler(text='premium_cars_show')
 async def premium_filters_inline(callback: types.CallbackQuery):
-    await callback.message.reply("Brands available in this category \U00002B07", reply_markup=ct_kb.premium_brands_inline)
+    await callback.message.reply("Brands in PREMIUM category \U00002B07", reply_markup=brands_bt_generator('premium'))
 
 @dp.callback_query_handler(Text(startswith='premium_'))
 async def premium_models_inline(callback: types.CallbackQuery):
     brand_choosen = callback.data.split('_')
-    await callback.message.reply("Models available \U00002B07", reply_markup=premium_mdls_bt_generator(brand_choosen[1]))
+    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(brand_choosen[0],brand_choosen[1]))
 
 @dp.callback_query_handler(Text(startswith='prem_'))
 async def prem_model_info(callback: types.CallbackQuery):
@@ -185,12 +193,12 @@ async def suv_category(message : types.Message):
 
 @dp.callback_query_handler(text='suv_cars_show')
 async def suv_filters_inline(callback: types.CallbackQuery):
-    await callback.message.reply("Brands available in this category \U00002B07", reply_markup=ct_kb.suv_brands_inline)
+    await callback.message.reply("Brands in Suv category \U00002B07", reply_markup=brands_bt_generator('suv'))
 
 @dp.callback_query_handler(Text(startswith='suv_'))
 async def middle_models_inline(callback: types.CallbackQuery):
     brand_choosen = callback.data.split('_')
-    await callback.message.reply("Models available \U00002B07", reply_markup=suv_mdls_bt_generator(brand_choosen[1]))
+    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(brand_choosen[0],brand_choosen[1]))
 
 @dp.callback_query_handler(Text(startswith='sv_'))
 async def sv_model_info(callback: types.CallbackQuery):
@@ -212,12 +220,12 @@ async def minivan_category(message : types.Message):
 
 @dp.callback_query_handler(text='minivan_cars_show')
 async def minivan_filters_inline(callback: types.CallbackQuery):
-    await callback.message.reply("Brands available in this category \U00002B07", reply_markup=ct_kb.minivan_brands_inline)
+    await callback.message.reply("Brands in Minivan category \U00002B07", reply_markup=brands_bt_generator('minivan'))
 
 @dp.callback_query_handler(Text(startswith='minivan_'))
 async def minivan_models_inline(callback: types.CallbackQuery):
     brand_choosen = callback.data.split('_')
-    await callback.message.reply("Models available \U00002B07", reply_markup=minivan_mdls_bt_generator(brand_choosen[1]))
+    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(brand_choosen[0],brand_choosen[1]))
 
 @dp.callback_query_handler(Text(startswith='van_'))
 async def van_model_info(callback: types.CallbackQuery):
