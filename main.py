@@ -79,7 +79,7 @@ async def economy_category(message : types.Message):
 
 @dp.callback_query_handler(text='economy_cars_show')
 async def economy_cars_inline(callback: types.CallbackQuery):
-    await callback.message.reply(f"Brands in Economy category\U00002B07", reply_markup=brands_bt_generator('economy'))
+    await callback.message.reply(f"Brands in Economy category\U00002B07", reply_markup = brands_bt_generator('economy'))
     
     
 @dp.callback_query_handler(Text(startswith='economy_'))
