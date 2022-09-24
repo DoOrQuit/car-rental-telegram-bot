@@ -5,4 +5,4 @@ Bot handles offers the cars available in rental owner's fleet. Availability of c
                                                                                                                     updated frequently.
 Bot is built on aiogram lib.
 
-This bot is a part of self.education path.
+This bot is a part of self.education programm
