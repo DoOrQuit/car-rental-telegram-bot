@@ -1,7 +1,7 @@
 import psycopg2
 from config import db_pass
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
-from brand_button_generator import brands_list_gen
+from core.brand_button_generator import brands_list_gen
 
 
 

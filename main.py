@@ -5,11 +5,11 @@ from datetime import datetime #imported only for defining the current time. Used
 import aiogram
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.filters import Text
-import essential_bt as kb
-import car_category_bt as ct_kb
-from model_list_generator import *
-from model_button_generator import mdls_bt_generator
-from brand_button_generator import brands_bt_generator
+from core import essential_bt as kb
+from core import  car_category_bt as ct_kb
+from core.model_list_generator import *
+from core.model_button_generator import mdls_bt_generator
+from core.brand_button_generator import brands_bt_generator
 from core.car_info_img.model_info import car_info
 
 

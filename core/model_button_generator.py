@@ -1,5 +1,5 @@
 from config import db_pass
-from model_list_generator import models_dict_gen
+from core.model_list_generator import models_dict_gen
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
 
 
