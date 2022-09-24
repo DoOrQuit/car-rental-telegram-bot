@@ -9,7 +9,7 @@ from brand_button_generator import brands_list_gen
 
 def models_dict_gen(category:str):
     """
-    Generates the lists of brands in Economy category each of which contains evailable model names
+    Generates the dicts of brands in category (specified as argument) each of which contains evailable model names
     """
     models_dict = {}
     try:
@@ -18,8 +18,9 @@ def models_dict_gen(category:str):
                                     password = db_pass)
         curs = connect.cursor()
         
-        #iteration that creates the lists contains all models available for every single brand
-        if category == 'suv' or category =='minivan':
+        
+        if category == 'suv' or category =='minivan': # iteration that creates the lists contains 
+                                                      # all models available for every single brand
 
             for brand in brands_list_gen(category):
 

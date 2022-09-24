@@ -6,16 +6,18 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemo
 
 
 """This file contains supportive functions"""
-
-# Fetching the list of cars' category to hand over to button generating function
+ 
 def brands_list_gen(category:str):
+    """
+    Fetching the list of cars' category to hand over to button generating function
+    """
     try:
         connect = psycopg2.connect(database = 'car_rental', 
                             user = 'postgres', 
                             password = db_pass)
         curs = connect.cursor()
         
-        if category == 'suv' or category == 'minivan':
+        if category == 'suv' or category == 'minivan': # Both categories placed in IF statement due to quering as sub_category
             curs.execute("""SELECT DISTINCT brand
                             FROM fleet
                             WHERE sub_category = %s """, (category,))

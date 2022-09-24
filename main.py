@@ -1,7 +1,7 @@
 import asyncio
 from config import TOKEN
 from core.car_info_img.img_attacher import img_loader
-from datetime import datetime
+from datetime import datetime #imported only for defining the current time. Used for initial greetings during bot activation.
 import aiogram
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.filters import Text
@@ -29,18 +29,14 @@ async def command_start(message : types.Message):
     elif 2359 > int(current_time) > 1600 :
         await bot.send_message(message.from_user.id, f"Good evening, {message.from_user.first_name}."
                                                     " Please, press one of the buttons below \U00002B07", reply_markup= kb.main_buttons)
-    brands_list_gen('economy')
+    
+    brands_list_gen('economy')              #initialization and generation the list of brands fetched from Database
     brands_list_gen('middle')
     brands_list_gen('business')
     brands_list_gen('premium')
     brands_list_gen('suv')
     brands_list_gen('minivan')
-    
-    # middle_list_gen()
-    # business_list_gen()
-    # premium_list_gen()
-    # suv_list_gen()
-    # minivan_list_gen()
+
 
 """Help Command"""
 @dp.message_handler(commands = ['help'])
@@ -54,11 +50,11 @@ async def command_contacts(message : types.Message):
                                                 "\nEmail: test@rentals.ua", reply_markup=kb.main_buttons)
 
 """Assistant Call. Reacts for text in chat"""
-@dp.message_handler(lambda message : 'assist' in message.text.lower())
+@dp.message_handler(lambda message : 'assist' in message.text.lower())      # bot reaction for word 'assist' in message
 async def assistant_contact(message : types.Message):
     await message.reply("Customers support contact 24/7\n+380991234567")
     await bot.send_message(message.from_user.id,'Hope I could help', reply_markup=kb.main_buttons)
-@dp.message_handler(lambda message : 'help' in message.text.lower())
+@dp.message_handler(lambda message : 'help' in message.text.lower())        # bot reaction for word 'help' in message
 async def assistant_contact(message : types.Message):
     await message.reply("Customers support contact 24/7\n+380991234567")
     await bot.send_message(message.from_user.id,'Hope I could help', reply_markup=kb.main_buttons)
@@ -67,14 +63,14 @@ async def assistant_contact(message : types.Message):
 
 """Identifies the category for building the class object and branching the dialog relating to renting filters"""
 
-@dp.message_handler(lambda message : 'rent' in message.text.lower())
+@dp.message_handler(lambda message : 'rent' in message.text.lower())       # bot reaction for word 'rent' in message
 async def category_identifier(message : types.Message):
     await message.reply("Sure! We'll find a perfect car for You!")
-    await bot.send_message(message.from_user.id,"Please, use the menu \U00002B07 to find Your perfect car", reply_markup=kb.category_buttons)
+    await bot.send_message(message.from_user.id,"Please, use the menu \U00002B07"
+                                                " to find Your perfect car", reply_markup=kb.category_buttons)
     
 
 """Economy Section of message and callback handlers"""
-
 
 @dp.message_handler(lambda message : 'economy' in message.text.lower())
 async def economy_category(message : types.Message):
@@ -88,23 +84,28 @@ async def economy_cars_inline(callback: types.CallbackQuery):
     
 @dp.callback_query_handler(Text(startswith='economy_'))
 async def economy_models_inline(callback: types.CallbackQuery):
-    brand_choosen = callback.data.split('_')
-    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(brand_choosen[0], brand_choosen[1]))
+    brand_choosen = callback.data.split('_')    # splits the callback message from inline button in format {category}_{brand}_{model}
+    category = brand_choosen[0]                 # to handover it to the function mdls_bt_generator which generates the inline buttons
+    brand = brand_choosen[1]
+    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(category, brand))
 
 @dp.callback_query_handler(Text(startswith='ecnm_'))
 async def ecnm_model_info(callback: types.CallbackQuery):
-    model_choosen = callback.data.split('_')
-    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(model_choosen[1], model_choosen[-1]), 
-                                caption=f"{model_choosen[1]} {model_choosen[2]}:\
-                                \n\n{car_info('economy' ,model_choosen[1], model_choosen[2])}", reply_markup=kb.order_bt)
-    img_loader(model_choosen[1], model_choosen[-1]).seek(0)
-    img_loader(model_choosen[1], model_choosen[-1]).close()
+    model_choosen = callback.data.split('_')    # splits the callback message from inline button to handover the relevant data
+                                                # to the func img_loader and car_info as required arguments
+    brand = model_choosen[1]
+    car_id = model_choosen[-1]
+    model = model_choosen[2]
+    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(brand, car_id), 
+                                caption=f"{brand} {model}:\
+                                \n\n{car_info('economy' , brand, model)}", reply_markup=kb.order_bt)
+    img_loader(brand, car_id).seek(0)
+    img_loader(brand, car_id).close()
 
 
 
 """Middle Section of message and callback handlers"""
                             
-
 @dp.message_handler(lambda message : 'middle' in message.text.lower())
 async def middle_category(message : types.Message):
     await message.reply('Middle category\n(30$ - 70$)\n'
@@ -116,22 +117,27 @@ async def middle_filters_inline(callback: types.CallbackQuery):
 
 @dp.callback_query_handler(Text(startswith='middle_'))
 async def middle_models_inline(callback: types.CallbackQuery):
-    brand_choosen = callback.data.split('_')
-    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(brand_choosen[0], brand_choosen[1]))
+    brand_choosen = callback.data.split('_')    # splits the callback message from inline button in format {category}_{brand}_{model}
+    category = brand_choosen[0]                 # to handover it to the function mdls_bt_generator which generates the inline buttons
+    brand = brand_choosen[1]
+    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(category, brand))
 
 @dp.callback_query_handler(Text(startswith='mdl_'))
 async def mdl_model_info(callback: types.CallbackQuery):
-    model_choosen = callback.data.split('_')
-    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(model_choosen[1], model_choosen[-1]), 
-                                caption=f"{model_choosen[1]} {model_choosen[2]}:\
-                                \n\n{car_info('middle' ,model_choosen[1], model_choosen[2])}", reply_markup=kb.order_bt)
-    img_loader(model_choosen[1], model_choosen[-1]).seek(0)
-    img_loader(model_choosen[1], model_choosen[-1]).close()
+    model_choosen = callback.data.split('_')    # splits the callback message from inline button to handover the relevant data
+                                                # to the func img_loader and car_info as required arguments
+    brand = model_choosen[1]
+    car_id = model_choosen[-1]
+    model = model_choosen[2]
+    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(brand, car_id), 
+                                caption=f"{brand} {model}:\
+                                \n\n{car_info('middle' , brand, model)}", reply_markup=kb.order_bt)
+    img_loader(brand, car_id).seek(0)
+    img_loader(brand, car_id).close()
 
 
 """Business Section of message and callback handlers"""
                             
-
 @dp.message_handler(lambda message : 'business' in message.text.lower())
 async def business_category(message : types.Message):
     await message.reply('Business category\n(43$ - 90$)\n'
@@ -143,17 +149,23 @@ async def business_filters_inline(callback: types.CallbackQuery):
 
 @dp.callback_query_handler(Text(startswith='business_'))
 async def business_models_inline(callback: types.CallbackQuery):
-    brand_choosen = callback.data.split('_')
-    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(brand_choosen[0],brand_choosen[1]))
+    brand_choosen = callback.data.split('_')    # splits the callback message from inline button in format {category}_{brand}_{model}
+    category = brand_choosen[0]                 # to handover it to the function mdls_bt_generator which generates the inline buttons
+    brand = brand_choosen[1]
+    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(category, brand))
 
 @dp.callback_query_handler(Text(startswith='bsns_'))
 async def bsns_model_info(callback: types.CallbackQuery):
-    model_choosen = callback.data.split('_')
-    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(model_choosen[1], model_choosen[-1]), 
-                                caption=f"{model_choosen[1]} {model_choosen[2]}:\
-                                \n\n{car_info('business' ,model_choosen[1], model_choosen[2])}", reply_markup=kb.order_bt)
-    img_loader(model_choosen[1], model_choosen[-1]).seek(0)
-    img_loader(model_choosen[1], model_choosen[-1]).close()
+    model_choosen = callback.data.split('_')    # splits the callback message from inline button to handover the relevant data
+                                                # to the func img_loader and car_info as required arguments
+    brand = model_choosen[1]
+    car_id = model_choosen[-1]
+    model = model_choosen[2]
+    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(brand, car_id), 
+                                caption=f"{brand} {model}:\
+                                \n\n{car_info('business' , brand, model)}", reply_markup=kb.order_bt)
+    img_loader(brand, car_id).seek(0)
+    img_loader(brand, car_id).close()
 
 
 """Premium Section of message and callback handlers"""
@@ -170,22 +182,27 @@ async def premium_filters_inline(callback: types.CallbackQuery):
 
 @dp.callback_query_handler(Text(startswith='premium_'))
 async def premium_models_inline(callback: types.CallbackQuery):
-    brand_choosen = callback.data.split('_')
-    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(brand_choosen[0],brand_choosen[1]))
+    brand_choosen = callback.data.split('_')    # splits the callback message from inline button in format {category}_{brand}_{model}
+    category = brand_choosen[0]                 # to handover it to the function mdls_bt_generator which generates the inline buttons
+    brand = brand_choosen[1]
+    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(category, brand))
 
 @dp.callback_query_handler(Text(startswith='prem_'))
 async def prem_model_info(callback: types.CallbackQuery):
-    model_choosen = callback.data.split('_')
-    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(model_choosen[1], model_choosen[-1]), 
-                                caption=f"{model_choosen[1]} {model_choosen[2]}:\
-                                \n\n{car_info('premium' ,model_choosen[1], model_choosen[2])}", reply_markup=kb.order_bt)
-    img_loader(model_choosen[1], model_choosen[-1]).seek(0)
-    img_loader(model_choosen[1], model_choosen[-1]).close()
+    model_choosen = callback.data.split('_')    # splits the callback message from inline button to handover the relevant data
+                                                # to the func img_loader and car_info as required arguments
+    brand = model_choosen[1]
+    car_id = model_choosen[-1]
+    model = model_choosen[2]
+    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(brand, car_id), 
+                                caption=f"{brand} {model}:\
+                                \n\n{car_info('premium' , brand, model)}", reply_markup=kb.order_bt)
+    img_loader(brand, car_id).seek(0)
+    img_loader(brand, car_id).close()
 
 
 """SUV Section of message and callback handlers"""
                             
-
 @dp.message_handler(lambda message : 'suv' in message.text.lower())
 async def suv_category(message : types.Message):
     await message.reply('Suv category\n(Starts from 36$)\n'
@@ -197,17 +214,23 @@ async def suv_filters_inline(callback: types.CallbackQuery):
 
 @dp.callback_query_handler(Text(startswith='suv_'))
 async def middle_models_inline(callback: types.CallbackQuery):
-    brand_choosen = callback.data.split('_')
-    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(brand_choosen[0],brand_choosen[1]))
+    brand_choosen = callback.data.split('_')    # splits the callback message from inline button in format {category}_{brand}_{model}
+    category = brand_choosen[0]                 # to handover it to the function mdls_bt_generator which generates the inline buttons
+    brand = brand_choosen[1]
+    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(category, brand))
 
 @dp.callback_query_handler(Text(startswith='sv_'))
 async def sv_model_info(callback: types.CallbackQuery):
-    model_choosen = callback.data.split('_')
-    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(model_choosen[1], model_choosen[-1]), 
-                                caption=f"{model_choosen[1]} {model_choosen[2]}:\
-                                \n\n{car_info('suv' ,model_choosen[1], model_choosen[2])}", reply_markup=kb.order_bt)
-    img_loader(model_choosen[1], model_choosen[-1]).seek(0)
-    img_loader(model_choosen[1], model_choosen[-1]).close()
+    model_choosen = callback.data.split('_')    # splits the callback message from inline button to handover the relevant data
+                                                # to the func img_loader and car_info as required arguments
+    brand = model_choosen[1]
+    car_id = model_choosen[-1]
+    model = model_choosen[2]
+    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(brand, car_id), 
+                                caption=f"{brand} {model}:\
+                                \n\n{car_info('suv' , brand, model)}", reply_markup=kb.order_bt)
+    img_loader(brand, car_id).seek(0)
+    img_loader(brand, car_id).close()
 
 
 """Minivan Section of message and callback handlers"""
@@ -224,17 +247,23 @@ async def minivan_filters_inline(callback: types.CallbackQuery):
 
 @dp.callback_query_handler(Text(startswith='minivan_'))
 async def minivan_models_inline(callback: types.CallbackQuery):
-    brand_choosen = callback.data.split('_')
-    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(brand_choosen[0],brand_choosen[1]))
+    brand_choosen = callback.data.split('_')    # splits the callback message from inline button in format {category}_{brand}_{model}
+    category = brand_choosen[0]                 # to handover it to the function mdls_bt_generator which generates the inline buttons
+    brand = brand_choosen[1]
+    await callback.message.reply("Models available \U00002B07", reply_markup=mdls_bt_generator(category, brand))
 
 @dp.callback_query_handler(Text(startswith='van_'))
 async def van_model_info(callback: types.CallbackQuery):
-    model_choosen = callback.data.split('_')
-    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(model_choosen[1], model_choosen[-1]), 
-                                caption=f"{model_choosen[1]} {model_choosen[2]}:\
-                                \n\n{car_info('minivan' ,model_choosen[1], model_choosen[2])}", reply_markup=kb.order_bt)
-    img_loader(model_choosen[1], model_choosen[-1]).seek(0)
-    img_loader(model_choosen[1], model_choosen[-1]).close()
+    model_choosen = callback.data.split('_')    # splits the callback message from inline button to handover the relevant data
+                                                # to the func img_loader and car_info as required arguments
+    brand = model_choosen[1]
+    car_id = model_choosen[-1]
+    model = model_choosen[2]
+    await bot.send_photo(chat_id=callback.message.chat.id, photo=img_loader(brand, car_id), 
+                                caption=f"{brand} {model}:\
+                                \n\n{car_info('minivan' , brand, model)}", reply_markup=kb.order_bt)
+    img_loader(brand, car_id).seek(0)
+    img_loader(brand, car_id).close()
 
       
         

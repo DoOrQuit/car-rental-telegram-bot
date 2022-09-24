@@ -6,13 +6,15 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemo
 
 def mdls_bt_generator(category:str,brand:str): 
     """
-    Function generates the amount of inline buttons (models in this case) depends on brand and DB condition
+    Function generates the amount of inline buttons (models in this case) by meaning of fetching the data 
+    from dicts generated in dicts_generating func (models_dict_gen()) depends on brand and DB condition
     
     """
     
     final_expression = 'InlineKeyboardMarkup()'
     
-    for model in models_dict_gen(category).get(f'{category}_{brand}'):
+    for model in models_dict_gen(category).get(f'{category}_{brand}'): # extracting particular dict from generating func, depending on
+                                                                       # func arguments handed over from user request by callback meaning
         if category == 'economy':
             short_category = 'ecnm'
         elif category == 'middle':
