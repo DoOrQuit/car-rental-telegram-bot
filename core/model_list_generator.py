@@ -1,26 +1,22 @@
 import psycopg2
 from config import db_pass
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from core.brand_button_generator import brands_list_gen
 
 
-
-
-
-def models_dict_gen(category:str):
+def models_dict_gen(category: str) -> dict:
     """
-    Generates the dicts of brands in category (specified as argument) each of which contains evailable model names
+    Generates the dicts of brands in category (specified as argument) each of which contains available model names
     """
     models_dict = {}
     try:
-        connect = psycopg2.connect(database = 'car_rental', 
-                                    user = 'postgres', 
-                                    password = db_pass)
+        connect = psycopg2.connect(database='car_rental', user='postgres', password=db_pass)
         curs = connect.cursor()
-        
-        
-        if category == 'suv' or category =='minivan': # iteration that creates the lists contains 
-                                                      # all models available for every single brand
+
+        # iteration that creates the lists contains
+        # all models available for every single brand
+        if category == 'suv' or category == 'minivan':
 
             for brand in brands_list_gen(category):
 
